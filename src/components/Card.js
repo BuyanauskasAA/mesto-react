@@ -4,7 +4,7 @@ function Card({ card, onCardClick }) {
   }
 
   return (
-    <li className="card">
+    <>
       <button className="button card__delete-button" type="button" aria-label="Удалить"></button>
       <img onClick={handleClick} className="card__image" src={card.link} alt={card.name} />
       <div className="card__title-section">
@@ -14,7 +14,7 @@ function Card({ card, onCardClick }) {
           <p className="card__like-counter">{card.likes.length}</p>
         </div>
       </div>
-    </li>
+    </>
   );
 }
 
