@@ -1,17 +1,17 @@
-function Card(props) {
+function Card({ card, onCardClick }) {
   function handleClick() {
-    props.onCardClick(props.card);
+    onCardClick(card);
   }
 
   return (
     <li className="card">
       <button className="button card__delete-button" type="button" aria-label="Удалить"></button>
-      <img onClick={handleClick} className="card__image" src={props.card.link} alt={props.card.name} />
+      <img onClick={handleClick} className="card__image" src={card.link} alt={card.name} />
       <div className="card__title-section">
-        <h2 className="card__title">{props.card.name}</h2>
+        <h2 className="card__title">{card.name}</h2>
         <div className="card__like-container">
           <button className="button card__like-button" type="button" aria-label="Лайк"></button>
-          <p className="card__like-counter">{props.card.likes.length}</p>
+          <p className="card__like-counter">{card.likes.length}</p>
         </div>
       </div>
     </li>
