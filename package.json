@@ -1,9 +1,13 @@
 {
   "name": "mesto-react",
   "version": "0.1.0",
+  "description": "Создайте свой профиль и добавляйте информацию о местах в которых вы уже побывали или планируете побывать.",
+  "author": "Anton Buyanauskas",
+  "license": "ISC",
   "private": true,
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.10"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.10",
+    "gh-pages": "^5.0.0"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -18,7 +22,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
