@@ -9,6 +9,8 @@ import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import api from '../utils/Api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import validationConfig from '../utils/validation-config';
+import FormValidator from '../utils/FormValidator';
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
@@ -153,6 +155,24 @@ function App() {
     setTimeout(() => {
       setSelectedCard({});
     }, 250);
+  }
+
+  const formValidators = {};
+
+  const enableValidation = (config) => {
+    const formList = Array.from(document.querySelectorAll(config.formSelector));
+    formList.forEach((formElement) => {
+      const validator = new FormValidator(config, formElement);
+      const formName = formElement.getAttribute('name');
+      formValidators[formName] = validator;
+      validator.enableValidation();
+    });
+  };
+
+  enableValidation(validationConfig);
+
+  if (isConfirmPopupOpen) {
+    formValidators['confirm-popup'].enableSubmitButton();
   }
 
   return (
