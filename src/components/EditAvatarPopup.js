@@ -1,7 +1,7 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup({ isOpened, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ isOpened, onClose, onUpdateAvatar, isLoading }) {
   const avatar = React.useRef();
 
   function handleSubmit(event) {
@@ -14,6 +14,8 @@ function EditAvatarPopup({ isOpened, onClose, onUpdateAvatar }) {
     event.target.reset();
   }
 
+  const textButton = isLoading ? 'Сохранение...' : 'Сохранить';
+
   return (
     <PopupWithForm
       name="avatar-popup"
@@ -21,6 +23,7 @@ function EditAvatarPopup({ isOpened, onClose, onUpdateAvatar }) {
       isOpened={isOpened}
       onClose={onClose}
       onSubmit={handleSubmit}
+      textButton={textButton}
     >
       <label className="popup__field">
         <input
