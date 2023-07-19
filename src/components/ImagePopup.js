@@ -1,8 +1,17 @@
 function ImagePopup({ card, onClose }) {
+  function handleOverlayClose(event) {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  }
+
   const isEmptyCard = Object.keys(card).length === 0;
 
   return (
-    <div className={`popup image-popup ${isEmptyCard ? '' : 'popup_opened'}`}>
+    <div
+      onClick={handleOverlayClose}
+      className={`popup image-popup ${isEmptyCard ? '' : 'popup_opened'}`}
+    >
       <figure className="image-popup__container">
         <button
           onClick={onClose}
