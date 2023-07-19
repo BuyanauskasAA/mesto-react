@@ -10,9 +10,11 @@ function EditAvatarPopup({ isOpened, onClose, onUpdateAvatar, isLoading }) {
     onUpdateAvatar({
       avatar: avatar.current.value,
     });
-
-    event.target.reset();
   }
+
+  React.useEffect(() => {
+    avatar.current.value = '';
+  }, [isOpened]);
 
   const textButton = isLoading ? 'Сохранение...' : 'Сохранить';
 

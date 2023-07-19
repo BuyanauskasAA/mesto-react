@@ -3,15 +3,18 @@ import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpened, onClose, onAddPlace, isLoading }) {
   const name = React.useRef();
-  const link = React.useRef('');
+  const link = React.useRef();
 
   function handleSubmit(event) {
     event.preventDefault();
 
     onAddPlace({ name: name.current.value, link: link.current.value });
-
-    event.target.reset();
   }
+
+  React.useEffect(() => {
+    name.current.value = '';
+    link.current.value = '';
+  }, [isOpened]);
 
   const textButton = isLoading ? 'Сохранение...' : 'Создать';
 
