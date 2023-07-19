@@ -1,16 +1,16 @@
-function ImagePopup({ card, onClose }) {
+import React from 'react';
+
+function ImagePopup({ card, onClose, isOpened }) {
   function handleOverlayClose(event) {
     if (event.target === event.currentTarget) {
       onClose();
     }
   }
 
-  const isEmptyCard = Object.keys(card).length === 0;
-
   return (
     <div
       onClick={handleOverlayClose}
-      className={`popup image-popup ${isEmptyCard ? '' : 'popup_opened'}`}
+      className={`popup image-popup ${isOpened ? 'popup_opened' : ''}`}
     >
       <figure className="image-popup__container">
         <button

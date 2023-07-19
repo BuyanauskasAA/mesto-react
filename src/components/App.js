@@ -2,8 +2,8 @@ import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
+import ConfirmDeletePopup from './ConfirmDeletePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
@@ -14,6 +14,8 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
+  const [isConfirmPopupOpen, setConfirmPopupopen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isLoading, setLoading] = React.useState(false);
@@ -33,6 +35,34 @@ function App() {
       .catch(console.error);
   }, []);
 
+  React.useEffect(() => {
+    function handleEscapeClose(event) {
+      if (event.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+
+    if (
+      isAddPlacePopupOpen ||
+      isEditAvatarPopupOpen ||
+      isEditProfilePopupOpen ||
+      isImagePopupOpen ||
+      isConfirmPopupOpen
+    ) {
+      document.addEventListener('keydown', handleEscapeClose);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeClose);
+    };
+  }, [
+    isAddPlacePopupOpen,
+    isEditAvatarPopupOpen,
+    isEditProfilePopupOpen,
+    isImagePopupOpen,
+    isConfirmPopupOpen,
+  ]);
+
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
   }
@@ -47,6 +77,12 @@ function App() {
 
   function handleCardClick(card) {
     setSelectedCard(card);
+    setImagePopupOpen(true);
+  }
+
+  function handleConfirmClick(card) {
+    setSelectedCard(card);
+    setConfirmPopupopen(true);
   }
 
   function handleCardLike(card) {
@@ -61,12 +97,15 @@ function App() {
   }
 
   function handleCardDelete(card) {
+    setLoading(true);
     api
       .deleteCard(card._id)
       .then(() => {
         setCards((state) => state.filter((item) => item._id !== card._id));
+        closeAllPopups();
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }
 
   function handleUpdateUser(userInfo) {
@@ -109,7 +148,11 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
-    setSelectedCard({});
+    setImagePopupOpen(false);
+    setConfirmPopupopen(false);
+    setTimeout(() => {
+      setSelectedCard({});
+    }, 250);
   }
 
   return (
@@ -123,7 +166,7 @@ function App() {
           onAddPlace={handleAddPlaceClick}
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          onCardDelete={handleConfirmClick}
         />
         <Footer />
       </div>
@@ -149,14 +192,15 @@ function App() {
         isLoading={isLoading}
       />
 
-      <PopupWithForm
-        name="confirm-popup"
-        title="Вы уверены?"
-        isOpened={false}
+      <ConfirmDeletePopup
+        card={selectedCard}
+        isOpened={isConfirmPopupOpen}
         onClose={closeAllPopups}
+        isLoading={isLoading}
+        onConfirm={handleCardDelete}
       />
 
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      <ImagePopup card={selectedCard} isOpened={isImagePopupOpen} onClose={closeAllPopups} />
     </CurrentUserContext.Provider>
   );
 }
