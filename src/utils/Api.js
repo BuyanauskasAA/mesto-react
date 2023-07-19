@@ -22,16 +22,10 @@ class Api {
     });
   }
 
-  putLike(cardId) {
+  changeLikeCardStatus(cardId, isLiked) {
+    const method = isLiked ? 'PUT' : 'DELETE';
     return this._request(`cards/${cardId}/likes`, {
-      method: 'PUT',
-      headers: this._headers,
-    });
-  }
-
-  deleteLike(cardId) {
-    return this._request(`cards/${cardId}/likes`, {
-      method: 'DELETE',
+      method: method,
       headers: this._headers,
     });
   }
