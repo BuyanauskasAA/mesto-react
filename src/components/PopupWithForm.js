@@ -1,9 +1,24 @@
+import React from 'react';
+import validationConfig from '../utils/validation-config';
+import FormValidator from '../utils/FormValidator';
+
 function PopupWithForm({ name, title, children, isOpened, onClose, onSubmit, textButton }) {
+  const form = React.useRef();
+
   function handleOverlayClose(event) {
     if (event.target === event.currentTarget) {
       onClose();
     }
   }
+
+  React.useEffect(() => {
+    const formValidator = new FormValidator(validationConfig, form.current);
+    formValidator.enableValidation();
+
+    if (form.current.name === 'confirm-popup') {
+      formValidator.enableSubmitButton();
+    }
+  }, [isOpened]);
 
   return (
     <div onClick={handleOverlayClose} className={`popup ${name} ${isOpened ? 'popup_opened' : ''}`}>
@@ -15,7 +30,7 @@ function PopupWithForm({ name, title, children, isOpened, onClose, onSubmit, tex
           aria-label="Закрыть"
         ></button>
         <h2 className="popup__title">{title}</h2>
-        <form onSubmit={onSubmit} className="popup__form" name={name} noValidate>
+        <form ref={form} onSubmit={onSubmit} className="popup__form" name={name} noValidate>
           {children}
           <button className="button popup__submit-button" type="submit">
             {textButton}
