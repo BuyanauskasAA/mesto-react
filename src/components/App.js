@@ -24,10 +24,12 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()]).then(([user, cards]) => {
-      setCurrentUser(user);
-      setCards(cards);
-    });
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([user, cards]) => {
+        setCurrentUser(user);
+        setCards(cards);
+      })
+      .catch(console.error);
   }, []);
 
   function handleEditAvatarClick() {
@@ -49,36 +51,51 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some((like) => like._id === currentUser._id);
 
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((item) => (item._id === card._id ? newCard : item)));
-    });
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((item) => (item._id === card._id ? newCard : item)));
+      })
+      .catch(console.error);
   }
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id).then(() => {
-      setCards((state) => state.filter((item) => item._id !== card._id));
-    });
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((item) => item._id !== card._id));
+      })
+      .catch(console.error);
   }
 
   function handleUpdateUser(userInfo) {
-    api.setUserInfo(userInfo).then((user) => {
-      setCurrentUser(user);
-      closeAllPopups();
-    });
+    api
+      .setUserInfo(userInfo)
+      .then((user) => {
+        setCurrentUser(user);
+        closeAllPopups();
+      })
+      .catch(console.error);
   }
 
   function handleUpdateAvatar(avatar) {
-    api.setUserAvatar(avatar).then((user) => {
-      setCurrentUser(user);
-      closeAllPopups();
-    });
+    api
+      .setUserAvatar(avatar)
+      .then((user) => {
+        setCurrentUser(user);
+        closeAllPopups();
+      })
+      .catch(console.error);
   }
 
   function handleAddPlaceSubmit(card) {
-    api.addCard(card).then((newCard) => {
-      setCards([newCard, ...cards]);
-      closeAllPopups();
-    });
+    api
+      .addCard(card)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch(console.error);
   }
 
   function closeAllPopups() {
