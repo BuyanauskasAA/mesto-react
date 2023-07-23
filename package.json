@@ -5,7 +5,7 @@
   "author": "Anton Buyanauskas",
   "license": "ISC",
   "private": true,
-  "homepage": "https://buyanauskasaa.github.io/mesto-react/",
+  "homepage": "/mesto-react",
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.10",
     "gh-pages": "^5.0.0"
