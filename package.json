@@ -5,6 +5,7 @@
   "author": "Anton Buyanauskas",
   "license": "ISC",
   "private": true,
+  "homepage": ".",
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.10",
     "gh-pages": "^5.0.0"
